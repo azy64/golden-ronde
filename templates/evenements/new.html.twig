@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Evenements{% endblock %}
+
+{% block body %}
+    {#{ include('evenements/_form.html.twig') }#}
+     {{ include('./_cadre.html.twig',{image: asset('images/images.jpeg'), formulaire:'evenements/_form.html.twig', titre: 'Ajouter un evenement'}) }}
+
+    <a href="{{ path('app_evenements_index') }}">back to list</a>
+{% endblock %}

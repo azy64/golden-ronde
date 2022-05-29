@@ -1,0 +1,220 @@
+<div class="row">
+    <div class="col-12">
+        <div class="border border-1 border-secondary p-1">
+            <strong>Nom : </strong> {{ la_ronde.agent.nom }} {{la_ronde.agent.prenom}}<br>
+             <strong>Numero professionel : </strong> {{ la_ronde.agent.numPro }}<br>
+            <strong>Téléphone : </strong> {{ la_ronde.agent.telephone }}
+        </div>
+    </div>
+</div>
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button id="submit" class="header-bg p-3 text-white border-0">{{ button_label|default('Save') }}</button>
+    
+    {{ form_end(form) }}
+{{ form_end(form) }}
+
+<div class="w-100 text-end">
+   <button id="display" class="header-bg text-white p-2 border-0">Ajouter une chronologie </button>
+</div>
+<div>
+    <table class="golden-table w-100" id="recap">
+    <thead>
+        <tr class="text-center">
+            <th class="p-1" >Heure</th>
+            <th class="p-1" >Type</th>
+            <th class="p-1" >Pointeau</th>
+            <th class="p-1" >Observation</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+       
+</div>
+<!-- Modal -->
+<div class="fixed-top pt-5 visually-hidden" id="bubble">
+    <div class="window header-bg-rgba w-75 m-auto p-5">
+        <div class="alert bg-white">
+            <div class="alert-header row">
+                <h3 class="col-6">Ajouter une observation</h3>
+                <span class="col-6 text-end close-alert" onclick='closeFenetre()' role="button">&times;</span>
+            </div>
+            <div class="alert-body">
+                <form action="">
+                    <div class="form-group">
+                        <label for="">Heure</label>
+                        <input type="time" class="form-control" id="heure">
+                    </div>
+                    <div class="form-group">
+                        <label for="">Type</label>
+                        <select class="form-control" id="type">
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Pointeau</label>
+                        <select class="form-control" id="pointaux">
+                            
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="">Observation</label>
+                        <textarea type="text" class="form-control" id="observation" height="100">
+
+                        </textarea>
+                    </div>
+                    <div class="pt-3">
+                    <button id="cancel" class="header-bg p-2 text-white border-0">Annuler</button>
+                    <button id="new-event" class="header-bg p-2 text-white border-0">Ajouter</button>
+                    </div>
+                </form>
+            </div>
+    </div>
+
+</div>
+
+
+<!--##########################################################################################-->
+<button id="add" class="btn">Add</button>
+
+<script type="text/javascript">
+const base_url = '{{ app.request.getBaseURL() }}';
+const loadPointaux = async (id,target) => {
+    const response = await fetch(`${base_url}/pointaux/site-pointaux/${id}`);
+    const data = await response.json();
+    target.innerHTML = '';
+    data.map(pointaux => {
+        const option = document.createElement('option');
+        option.value = pointaux;
+        option.innerHTML = pointaux;
+        target.appendChild(option);
+    });
+}
+const loadType = async (target) => {
+    const response = await fetch(`${base_url}/type/evenements/tout`);
+    const data = await response.json();
+    data.map(type => {
+        const option = document.createElement('option');
+        option.value = type;
+        option.innerHTML = type;
+        target.appendChild(option);
+    });
+}
+loadType(document.getElementById('type'));
+const select = document.getElementById('la_ronde_site');
+select.addEventListener('change', function(e){
+    const id = e.target.selectedOptions[0].innerHTML.split("-")[0].trim();
+    console.log(e.target.selectedOptions[0].innerHTML.split("-")[0].trim());
+    loadPointaux(id, document.getElementById('pointaux'));
+});
+const path = "{{ path('app_la_ronde_new') }}";
+window.addEventListener('load',function() {
+  const btn = document.getElementById('add');
+  const container = document.getElementById('la_ronde_groupages');
+  btn.addEventListener('click', ()=>{
+      const content =container.getAttribute('data-prototype');
+      container.innerHTML+= (content);
+      console.log('text: ', content);
+  });
+   let date = new Date();
+   let el = document.getElementById('la_ronde_date_debut');
+    let day = date.toString();
+    el.value = day;
+    console.log('value:', el.value);
+});
+const btnDisplay = document.getElementById('display');
+btnDisplay.addEventListener('click', ()=>{
+    const bubble = document.getElementById('bubble');
+    console.log('je suis là', btnDisplay);
+    bubble.classList.toggle('visually-hidden');
+    //bubble.classList.remove('visually-hidden');
+    console.log(bubble);
+});
+const btnCancel = document.getElementById('cancel');
+const closeFenetre =()=>{
+    const bubble = document.getElementById('bubble');
+    bubble.classList.toggle('visually-hidden');
+}
+btnCancel.addEventListener('click', (event)=>{
+    event.preventDefault();
+    closeFenetre();
+});
+const btnNewEvent = document.getElementById('new-event');
+const vider = ()=> {
+    document.getElementById('heure').value = '';
+    document.getElementById('type').value = '';
+    document.getElementById('pointaux').value = '';
+    document.getElementById('observation').value = '';
+}
+btnNewEvent.addEventListener('click', (event)=>{
+   const data = localStorage.getItem('dataEvents')??[];
+    event.preventDefault();
+    const bubble = document.getElementById('bubble');
+    bubble.classList.add('visually-hidden');
+    const heure = document.getElementById('heure').value;
+    const type = document.getElementById('type').value;
+    const pointaux = document.getElementById('pointaux').value;
+    const observation = document.getElementById('observation').value;
+    const table = document.getElementById('recap');
+    const row = document.createElement('tr');
+    const tdHeure = document.createElement('td');
+    const tdType = document.createElement('td');
+    const tdPointaux = document.createElement('td');
+    const tdObservation = document.createElement('td');
+    tdHeure.innerHTML = heure;
+    tdType.innerHTML = type;
+    tdPointaux.innerHTML = pointaux;
+    tdObservation.innerHTML = observation;
+    row.appendChild(tdHeure);
+    row.appendChild(tdType);
+    row.appendChild(tdPointaux);
+    row.appendChild(tdObservation);
+    table.appendChild(row);
+    const evenement = {
+        heure: heure,
+        type: type,
+        pointaux: pointaux,
+        observation: observation
+    };
+    data.push(evenement);
+    localStorage.setItem('dataEvents', JSON.stringify(data));
+    vider();
+});
+const loadData = () =>{
+    const data = JSON.parse(localStorage.getItem('dataEvents'))??[];
+    const table = document.getElementById('recap');
+    data.map(evenement => {
+        const row = document.createElement('tr');
+        const tdHeure = document.createElement('td');
+        const tdType = document.createElement('td');
+        const tdPointaux = document.createElement('td');
+        const tdObservation = document.createElement('td');
+        tdHeure.innerHTML = evenement.heure;
+        tdType.innerHTML = evenement.type;
+        tdPointaux.innerHTML = evenement.pointaux;
+        tdObservation.innerHTML = evenement.observation;
+        row.appendChild(tdHeure);
+        row.appendChild(tdType);
+        row.appendChild(tdPointaux);
+        row.appendChild(tdObservation);
+        table.appendChild(row);
+        console.log('loading...');
+    });
+}
+const soumettre = () =>{
+    const submit = document.getElementById('submit');
+    submit.addEventListener('click', (event)=>{
+        const form =document.querySelector('form');
+        const input = document.getElementById('la_ronde_data');
+        input.setAttribute('value', localStorage.getItem('dataEvents'));
+        console.log('input:' , input);
+        form.appendChild(input);
+        localStorage.removeItem('dataEvents');
+        //form.submit();
+           
+    });
+}
+soumettre();
+loadData();
+</script>

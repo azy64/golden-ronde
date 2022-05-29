@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Pointaux{% endblock %}
+
+{% block body %}
+<div></div>
+  {{ include('pointaux/_delete_form.html.twig') }}
+{{ include('./_cadre.html.twig',{'button_label': 'Mise à jour', image: asset('images/images.jpeg'), formulaire:'pointaux/_form.html.twig', titre: 'Edit Pointau'}) }}
+    <a href="{{ path('app_pointaux_index') }}">back to list</a>
+
+  
+{% endblock %}

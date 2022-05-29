@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New LaRonde{% endblock %}
+
+{% block body %}
+   <div class="row">
+    <div class="col-6">
+        <div style="overflow:hidden;" class="p-5">
+            <img src="{{asset('images/images.jpeg')}}" width="500" alt="golden_image">
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row p-5">
+            <div class="col-12">
+                <h2 class="golden-color">MAIN COURANTE</h2>
+    {{ include('la_ronde/_form.html.twig') }}
+    
+     </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    
+                </p>
+            </div>
+    </div>
+</div>
+    <a href="{{ path('app_la_ronde_index') }}">back to list</a>
+{% endblock %}

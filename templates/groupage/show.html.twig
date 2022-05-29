@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Groupage{% endblock %}
+
+{% block body %}
+    <h1>Groupage</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ groupage.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_groupage_index') }}">back to list</a>
+
+    <a href="{{ path('app_groupage_edit', {'id': groupage.id}) }}">edit</a>
+
+    {{ include('groupage/_delete_form.html.twig') }}
+{% endblock %}

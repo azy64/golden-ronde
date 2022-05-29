@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LaRonde index{% endblock %}
+
+{% block body %}
+    <h1>LaRonde index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date_fin</th>
+                <th>Date_debut</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for la_ronde in la_rondes %}
+            <tr>
+                <td>{{ la_ronde.id }}</td>
+                <td>{{ la_ronde.dateFin ? la_ronde.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ la_ronde.dateDebut ? la_ronde.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">show</a>
+                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_la_ronde_new') }}">Create new</a>
+{% endblock %}

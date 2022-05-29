@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{# ... #}
+
+{% block body %}
+
+<div class="row">
+    <div class="col-6">
+        <div style="overflow:hidden;" class="p-5">
+            <img src="{{asset('images/images.jpeg')}}" width="500" alt="golden_image">
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row p-5">
+            <div class="col-12">
+                <h2 class="golden-color">MAIN COURANTE ELECTRONIQUE</h2>
+        {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form class="mt-5 pt-5" action="{{ path('app_login') }}" method="post">
+        <div class="mb-1">
+            <label class="fs-4" for="username">ADRSSE EMAIL</label>
+        </div>
+        <div class="mb-3">
+            <input class="w-75 p-2" placeholder="Votre email" type="email" id="email" name="_username"/>
+        </div>
+        <div class="mb-1">
+            <label class="fs-4 mb-1" for="password">MOT DE PASSE</label>
+        </div>
+        <div class="mb-3">
+            <input class="w-75 p-2" placeholder="Votre mot de passe" type="password" id="password" name="_password"/>
+        </div>
+        
+        
+
+        
+        
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        {# If you want to control the URL the user is redirected to on success
+        <input type="hidden" name="_target_path" value="/account"/> #}
+        <div class="text-end w-75">
+            <a href="{{ path('app_register') }}">vous n'avez pas de compte?</a>
+            <button class="header-bg text-white p-2 border-0" type="submit">Connexion</button>
+        </div>
+        
+    </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    
+                </p>
+            </div>
+    </div>
+</div>
+    
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LaRonde{% endblock %}
+
+{% block body %}
+    <h1>LaRonde</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ la_ronde.id }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ la_ronde.dateFin ? la_ronde.dateFin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_debut</th>
+                <td>{{ la_ronde.dateDebut ? la_ronde.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_la_ronde_index') }}">back to list</a>
+
+    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">edit</a>
+
+    {{ include('la_ronde/_delete_form.html.twig') }}
+{% endblock %}

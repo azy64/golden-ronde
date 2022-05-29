@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit LaRonde{% endblock %}
+
+{% block body %}
+    <h1>Edit LaRonde</h1>
+
+    {{ include('la_ronde/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_la_ronde_index') }}">back to list</a>
+
+    {{ include('la_ronde/_delete_form.html.twig') }}
+{% endblock %}

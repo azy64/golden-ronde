@@ -1,0 +1,61 @@
+
+.header-bg {
+    background: #232439;
+    transition: all 1.5s ease;
+}
+
+.header-bg:hover {
+    background: #e9e9f0;
+    color: #232439 !important;
+}
+
+.header-bg-rgba   {
+    background: rgb(35,36,57, .8);
+}
+
+.golden-color {
+    color: #232439;
+}
+
+.btn-golden {
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    min-width: 30px;
+}
+
+.golden-table {
+    border: 1px solid #232439 !important;
+    border-collapse: collapse;
+}
+
+.golden-table th, .golden-table td {
+    border: #232439 1px solid;
+}
+
+#la_ronde_site {
+    padding: 10px;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+#la_ronde_date_debut {
+    width: 100%;
+    margin-bottom: 10px;    }
+#la_ronde_date_debut select {
+    width: 32%;
+    margin-right: 1%;
+    padding: 10px;
+}
+
+#la_ronde_materiel {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
+    border: 1px solid gray;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+#la_ronde_materiel label {
+    margin-right: 3px;
+}

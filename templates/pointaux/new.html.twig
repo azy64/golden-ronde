@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Pointaux{% endblock %}
+
+{% block body %}
+    {#{ include('pointaux/_form.html.twig') }#}
+    {{ include('./_cadre.html.twig',{'button_label': 'Enregistrer', image: asset('images/images.jpeg'), formulaire:'pointaux/_form.html.twig', titre: 'Creer un Pointau'}) }}
+
+
+    <a class="text-white w-25 btn-golden header-bg p-1 fs-1 fw-bold text-center" href="{{ path('app_pointaux_index') }}">&#8592;</a>
+{% endblock %}

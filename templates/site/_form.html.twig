@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <div class="text-end">
+        <button class="header-bg text-white border border-0 p-2 mt-3">
+            {{ button_label|default('Enregistrer') }}
+        </button>
+    </div>
+    
+{{ form_end(form) }}
