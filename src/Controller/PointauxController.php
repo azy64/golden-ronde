@@ -15,7 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pointaux")
- * isGranted("ROLE_ADMIN")
+ * @isGranted("ROLE_ADMIN")
  */
 class PointauxController extends AbstractController
 {

@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-5 text-end text-white">
                     
-                    {% if is_granted('ROLE_USER')%}
+                    {% if is_granted('ROLE_ADMIN')%}
                         <div class="navbar navbar-expand-lg w-100 navbar-light mt-4 text-end">
                             <ul class="navbar-nav me-auto mt-1 mb-0 mb-lg-0 m-auto">
                                 <li class="nav-item">
@@ -35,21 +35,23 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="#">Utilisateur</a>
+                                    <a class="nav-link text-white" href="#">Utilisateurs</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active text-white" aria-current="page" href="#">Evenement</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-white" href="#">Pointeaux</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link active text-white" aria-current="page" href="{{ path('app_la_ronde_index') }}">
-                                         Main Courante
+                                    <a class="nav-link active text-white" aria-current="page" href="{{path('app_evenements_index')}}">
+                                    Evenement
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link text-white" href="#">Link</a>
+                                    <a class="nav-link text-white" href="{{path('app_type_evenements_index')}}">déclencheur</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active text-white" aria-current="page" href="{{ path('app_la_ronde_index') }}">
+                                         Ronde
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="{{path('app_pointaux_index')}}">Pointaux</a>
                                 </li>
                             </ul>
                         </div

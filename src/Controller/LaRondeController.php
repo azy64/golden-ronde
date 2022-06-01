@@ -24,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class LaRondeController extends AbstractController
 {
     /**
-     * @Route("/home", name="app_la_ronde_index", methods={"GET"})
+     * @Route("/", name="app_la_ronde_index", methods={"GET"})
      */
     public function index(LaRondeRepository $laRondeRepository): Response
     {
@@ -84,7 +84,7 @@ class LaRondeController extends AbstractController
         return $groupes;
     }
     /**
-     * @Route("/{id}", name="app_la_ronde_show", methods={"GET"})
+     * @Route("/{id}/show", name="app_la_ronde_show", methods={"GET"})
      */
     public function show(LaRonde $laRonde): Response
     {
@@ -114,7 +114,7 @@ class LaRondeController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="app_la_ronde_delete", methods={"POST"})
+     * @Route("/{id}/delete", name="app_la_ronde_delete", methods={"POST"})
      */
     public function delete(Request $request, LaRonde $laRonde, LaRondeRepository $laRondeRepository): Response
     {
