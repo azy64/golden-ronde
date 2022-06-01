@@ -16,16 +16,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\VarDumper\VarDumper;
 
 /**
- * @Route("/la/ronde")
+ * @Route("/")
  * @IsGranted("ROLE_USER")
  */
 class LaRondeController extends AbstractController
 {
     /**
-     * @Route("/", name="app_la_ronde_index", methods={"GET"})
+     * @Route("/home", name="app_la_ronde_index", methods={"GET"})
      */
     public function index(LaRondeRepository $laRondeRepository): Response
     {
