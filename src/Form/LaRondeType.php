@@ -45,6 +45,7 @@ class LaRondeType extends AbstractType
             */
             ->add('date_debut',DateType::class, [
                 'label' => 'Date de début',
+                'years' => range(date('1900'), date('Y')),
                 'attr' => [
                     'class' => 'datepicker',
                     'placeholder' => 'Date de début',

@@ -9,8 +9,10 @@
         <thead>
             <tr>
                 <th>Id</th>
+                 <th>Date_debut</th>
                 <th>Date_fin</th>
-                <th>Date_debut</th>
+               <th>Site</th>
+               <th>Superviseur</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,13 +20,16 @@
         {% for la_ronde in la_rondes %}
             <tr>
                 <td>{{ la_ronde.id }}</td>
+                 <td>{{ la_ronde.dateDebut ? la_ronde.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ la_ronde.dateFin ? la_ronde.dateFin|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ la_ronde.dateDebut ? la_ronde.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
+               <td>{{ la_ronde.site.nom }}</td>
+               <td>{{ la_ronde.agent.nom }} {{ la_ronde.agent.prenom }}</td>
                 <td>
-                    <a href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">show</a>
+                    <a href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">Consulter</a>
                     {% if is_granted('ROLE_ADMIN')%}
-                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">edit</a>
+                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">Modifier</a>
                     {% endif %}
+                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">Télécharger</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +40,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_la_ronde_new') }}">Create new</a>
+    <a href="{{ path('app_la_ronde_new') }}">Nouvelle ronde</a>
 {% endblock %}

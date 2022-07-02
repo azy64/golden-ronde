@@ -9,7 +9,7 @@
 </div>
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button id="submit" class="header-bg p-3 text-white border-0">{{ button_label|default('Save') }}</button>
+    <button id="submit" class="header-bg p-3 text-white border-0">{{ button_label|default('Enregistrer') }}</button>
     
     {{ form_end(form) }}
 {{ form_end(form) }}
@@ -80,13 +80,14 @@
 <button id="add" class="btn">Add</button>
 
 <script type="text/javascript">
-let site =  localStorage.getItem('site');
+let site =  parseInt(localStorage.getItem('site'));
 let id = 1;
 const base_url = '{{ app.request.getBaseURL() }}';
-const loadPointaux = async (id,target) => {
-    const response = await fetch(`${base_url}/pointaux/site-pointaux/${id}`);
+const loadPointaux = async (idPoint,target) => {
+    const response = await fetch(`${base_url}/pointaux/site-pointaux/${idPoint}`);
     const data = await response.json();
     target.innerHTML = '';
+    console.log('data pointaux:', data);
     data.map(pointaux => {
         const option = document.createElement('option');
         option.value = pointaux;
@@ -110,15 +111,24 @@ const select = document.getElementById('la_ronde_site');
 select.addEventListener('change', function(e){
     const data = JSON.parse(localStorage.getItem('dataEvents'))??[];
     // console.log('valeur de e:', e.target.selectedOptions[0].value);
-    const id = e.target.selectedOptions[0].innerHTML.split("-")[0].trim();
-    console.log(e.target.selectedOptions[0].innerHTML.split("-")[0].trim());
+    const select = e.target;
+    const options = select.childNodes;
+    // console.log('options: ',options[0].innerHTML)
+    const id = select.selectedOptions[0].innerHTML.split("-")[0].trim();
+    console.log(select.selectedOptions[0].innerHTML.split("-")[0].trim());
     if(data.length>0){
-        e.target.disabled = true
+        select.disabled = true
         site = site??id;
     }
-    else
-     e.target.disabled = false;
+    else{
+        site = parseInt(id);
+        select.disabled = false;
+    }
     localStorage.setItem('site',site);
+    for(let i =1;i<options.length;i++){
+        if(parseInt(options[i].value)===(site-1)) options[i].selected = true;
+        else options[i].selected = false;
+    }
     loadPointaux(site, document.getElementById('pointaux'));
     
 });
@@ -126,6 +136,8 @@ select.addEventListener('change', function(e){
 const path = "{{ path('app_la_ronde_new') }}";
 window.addEventListener('load',function() {
   const btn = document.getElementById('add');
+  const select = document.getElementById('la_ronde_site');
+  const id = select.selectedOptions[0].innerHTML.split("-")[0].trim();
   const container = document.getElementById('la_ronde_groupages');
   btn.addEventListener('click', ()=>{
       const content =container.getAttribute('data-prototype');
@@ -133,16 +145,16 @@ window.addEventListener('load',function() {
   });
    let date = new Date();
    let el = document.getElementById('la_ronde_date_debut');
-    let day = date.toString();
-    el.value = day;
-    console.log('value:', el.value);
+   let day = date.toString();
+   el.value = day;
+   loadPointaux(id, document.getElementById('pointaux'));
 });
 const btnDisplay = document.getElementById('display');
 btnDisplay.addEventListener('click', ()=>{
     const bubble = document.getElementById('bubble');
     bubble.classList.toggle('visually-hidden');
     //bubble.classList.remove('visually-hidden');
-    console.log(bubble);
+    //console.log(bubble);
 });
 const btnCancel = document.getElementById('cancel');
 const closeFenetre =()=>{
@@ -176,6 +188,10 @@ const createButtonRemove = (tdAction,id) =>{
         data = data.filter((el)=> el.idEvent!=idValue);
         table.removeChild(document.querySelector('#recap'+idValue));
         localStorage.setItem('dataEvents',JSON.stringify(data));
+        if(data.length===0){
+            localStorage.removeItem('site');
+            select.disabled = false;
+        }
     });
     tdAction.appendChild(btnRemove);
     return tdAction;
@@ -246,15 +262,25 @@ const loadData = () =>{
     });
 }
 const soumettre = () =>{
+    localStorage.removeItem('site');
     const submit = document.getElementById('submit');
+    const dataEvents = JSON.parse(localStorage.getItem('dataEvents'));
     submit.addEventListener('click', (event)=>{
-        const form =document.querySelector('form');
-        const input = document.getElementById('la_ronde_data');
-        input.setAttribute('value', localStorage.getItem('dataEvents'));
-        console.log('input:' , input);
-        form.appendChild(input);
-        localStorage.removeItem('dataEvents');
-        localStorage.removeItem('site');
+        if(dataEvents.length>=2){
+            const form =document.querySelector('form');
+            const input = document.getElementById('la_ronde_data');
+            input.setAttribute('value', localStorage.getItem('dataEvents'));
+            localStorage.removeItem('dataEvents');
+            console.log('input:' , input);
+            form.appendChild(input);
+        }
+        else{
+            event.preventDefault();
+            alert('Veuillez au moins enregistrer deux evenements!');
+        }
+        
+        
+        //localStorage.removeItem('site');
         //form.submit();
            
     });
