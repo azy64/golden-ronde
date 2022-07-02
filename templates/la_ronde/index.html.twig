@@ -22,7 +22,9 @@
                 <td>{{ la_ronde.dateDebut ? la_ronde.dateDebut|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
                     <a href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">show</a>
+                    {% if is_granted('ROLE_ADMIN')%}
                     <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

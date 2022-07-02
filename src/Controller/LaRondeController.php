@@ -29,7 +29,7 @@ class LaRondeController extends AbstractController
     public function index(LaRondeRepository $laRondeRepository): Response
     {
         return $this->render('la_ronde/index.html.twig', [
-            'la_rondes' => $laRondeRepository->findAll(),
+            'la_rondes' => $laRondeRepository->findBy(['agent'=> $this->getUser()]),
         ]);
     }
 

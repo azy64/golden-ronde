@@ -18,18 +18,19 @@
    <button id="display" class="header-bg text-white p-2 border-0">Ajouter une chronologie </button>
 </div>
 <div>
-    <table class="golden-table w-100" id="recap">
+  <table class="golden-table w-100" id="recap">
     <thead>
         <tr class="text-center">
             <th class="p-1" >Heure</th>
             <th class="p-1" >Type</th>
             <th class="p-1" >Pointeau</th>
             <th class="p-1" >Observation</th>
+            <th class="p-1" >Action</th>
         </tr>
     </thead>
     <tbody>
     </tbody>
-</table>
+  </table>
        
 </div>
 <!-- Modal -->
@@ -79,6 +80,8 @@
 <button id="add" class="btn">Add</button>
 
 <script type="text/javascript">
+let site =  localStorage.getItem('site');
+let id = 1;
 const base_url = '{{ app.request.getBaseURL() }}';
 const loadPointaux = async (id,target) => {
     const response = await fetch(`${base_url}/pointaux/site-pointaux/${id}`);
@@ -103,11 +106,23 @@ const loadType = async (target) => {
 }
 loadType(document.getElementById('type'));
 const select = document.getElementById('la_ronde_site');
+//when you change the value of the select field---------------
 select.addEventListener('change', function(e){
+    const data = JSON.parse(localStorage.getItem('dataEvents'))??[];
+    // console.log('valeur de e:', e.target.selectedOptions[0].value);
     const id = e.target.selectedOptions[0].innerHTML.split("-")[0].trim();
     console.log(e.target.selectedOptions[0].innerHTML.split("-")[0].trim());
-    loadPointaux(id, document.getElementById('pointaux'));
+    if(data.length>0){
+        e.target.disabled = true
+        site = site??id;
+    }
+    else
+     e.target.disabled = false;
+    localStorage.setItem('site',site);
+    loadPointaux(site, document.getElementById('pointaux'));
+    
 });
+// ----------------------------------------------------------------------
 const path = "{{ path('app_la_ronde_new') }}";
 window.addEventListener('load',function() {
   const btn = document.getElementById('add');
@@ -115,7 +130,6 @@ window.addEventListener('load',function() {
   btn.addEventListener('click', ()=>{
       const content =container.getAttribute('data-prototype');
       container.innerHTML+= (content);
-      console.log('text: ', content);
   });
    let date = new Date();
    let el = document.getElementById('la_ronde_date_debut');
@@ -126,7 +140,6 @@ window.addEventListener('load',function() {
 const btnDisplay = document.getElementById('display');
 btnDisplay.addEventListener('click', ()=>{
     const bubble = document.getElementById('bubble');
-    console.log('je suis là', btnDisplay);
     bubble.classList.toggle('visually-hidden');
     //bubble.classList.remove('visually-hidden');
     console.log(bubble);
@@ -147,8 +160,29 @@ const vider = ()=> {
     document.getElementById('pointaux').value = '';
     document.getElementById('observation').value = '';
 }
+// button remove from table of events--------------
+const createButtonRemove = (tdAction,id) =>{
+    const btnRemove = document.createElement('button');
+    btnRemove.innerHTML= 'remove event';
+    btnRemove.setAttribute('data-value',id);
+    btnRemove.classList.add('header-bg');
+    btnRemove.classList.add('p-3');
+    btnRemove.classList.add('text-white');
+    btnRemove.classList.add('border-0');
+    btnRemove.addEventListener('click', (e)=>{
+        let data = JSON.parse(localStorage.getItem('dataEvents'));
+        const idValue = parseInt(e.target.getAttribute('data-value'));
+        const table = document.getElementById('recap');
+        data = data.filter((el)=> el.idEvent!=idValue);
+        table.removeChild(document.querySelector('#recap'+idValue));
+        localStorage.setItem('dataEvents',JSON.stringify(data));
+    });
+    tdAction.appendChild(btnRemove);
+    return tdAction;
+}
+//-----------------------------------------------------------------------
 btnNewEvent.addEventListener('click', (event)=>{
-   const data = localStorage.getItem('dataEvents')??[];
+   const data = JSON.parse(localStorage.getItem('dataEvents'))??[];
     event.preventDefault();
     const bubble = document.getElementById('bubble');
     bubble.classList.add('visually-hidden');
@@ -162,16 +196,22 @@ btnNewEvent.addEventListener('click', (event)=>{
     const tdType = document.createElement('td');
     const tdPointaux = document.createElement('td');
     const tdObservation = document.createElement('td');
+    const tdAction = document.createElement('td');
+    const tdAction1 = createButtonRemove(tdAction, id+1);
+    // tdAction1.appendChild(btnRemove);
     tdHeure.innerHTML = heure;
     tdType.innerHTML = type;
     tdPointaux.innerHTML = pointaux;
     tdObservation.innerHTML = observation;
+    row.id = 'recap'+(id+1);
     row.appendChild(tdHeure);
     row.appendChild(tdType);
     row.appendChild(tdPointaux);
     row.appendChild(tdObservation);
+    row.appendChild(tdAction1);
     table.appendChild(row);
     const evenement = {
+        idEvent: id+1,
         heure: heure,
         type: type,
         pointaux: pointaux,
@@ -179,6 +219,7 @@ btnNewEvent.addEventListener('click', (event)=>{
     };
     data.push(evenement);
     localStorage.setItem('dataEvents', JSON.stringify(data));
+    id++;
     vider();
 });
 const loadData = () =>{
@@ -190,6 +231,8 @@ const loadData = () =>{
         const tdType = document.createElement('td');
         const tdPointaux = document.createElement('td');
         const tdObservation = document.createElement('td');
+        const tdAction = document.createElement('td');
+        const tdAction1 = createButtonRemove(tdAction, evenement.idEvent);
         tdHeure.innerHTML = evenement.heure;
         tdType.innerHTML = evenement.type;
         tdPointaux.innerHTML = evenement.pointaux;
@@ -198,8 +241,8 @@ const loadData = () =>{
         row.appendChild(tdType);
         row.appendChild(tdPointaux);
         row.appendChild(tdObservation);
+        row.appendChild(tdAction1);
         table.appendChild(row);
-        console.log('loading...');
     });
 }
 const soumettre = () =>{
@@ -211,6 +254,7 @@ const soumettre = () =>{
         console.log('input:' , input);
         form.appendChild(input);
         localStorage.removeItem('dataEvents');
+        localStorage.removeItem('site');
         //form.submit();
            
     });
