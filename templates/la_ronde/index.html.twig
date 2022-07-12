@@ -29,7 +29,7 @@
                     {% if is_granted('ROLE_ADMIN')%}
                     <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">Modifier</a>
                     {% endif %}
-                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">Télécharger</a>
+                    <a href="{{ path('app_la_ronde_download', {'id': la_ronde.id}) }}">Télécharger</a>
                 </td>
             </tr>
         {% else %}

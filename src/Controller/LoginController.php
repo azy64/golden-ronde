@@ -23,4 +23,13 @@ class LoginController extends AbstractController
             'last_username' => $lastUsername,
         ]);
     }
+
+    /**
+     * @Route("/login", name="app_logout")
+     */
+
+    public function logout()
+    {
+        throw new \Exception('Don\'t forget to activate logout in security.yaml');
+    }
 }

@@ -9,13 +9,18 @@ use App\Entity\Pointaux;
 use App\Entity\Site;
 use App\Entity\TypeEvenements;
 use App\Form\LaRondeType;
+use App\Repository\GroupageRepository;
 use App\Repository\LaRondeRepository;
 use DateTime;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Knp\Snappy\Pdf;
+use Dompdf\Dompdf;
+
 
 /**
  * @Route("/")
@@ -123,5 +128,29 @@ class LaRondeController extends AbstractController
         }
 
         return $this->redirectToRoute('app_la_ronde_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+     /**
+     * @Route("/{id}/download", name="app_la_ronde_download", methods={"GET"})
+     */
+    public function download(LaRonde $ronde, GroupageRepository $grp){
+        //$knpSnappyPdf = new Pdf();
+        $dompdf = new Dompdf();
+        $groupages = $grp->findBy(['laRonde'=> $ronde]);
+        //dd($groupages);
+        $html =  $this->renderView('pdf/index.html.twig',['ronde'=> $ronde, 'groupages'=>$groupages]);
+
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => true
+        ]);
     }
 }

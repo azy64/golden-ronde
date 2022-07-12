@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title of the PDF</title>
+        <style>
+            .vert {
+                background: green;
+                color: white;
+                padding: 5px;
+                text-align: center;
+            }
+            .border1 {
+                border : 1px solid gray;
+                padding: 3px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <h1 style="text-align:center">FORMULAIRE RAPPORT DE RONDE</h1>
+            <b>DATE : {{ronde.dateFin | date()}}</b><br>
+            <strong>NOM DU SITE : {{ronde.site.nom}}</strong><br>
+            <strong>ADRESSE DU SITE : {{ronde.site.adresse}}</strong><br>
+            <strong>NOM DE L'AGENT : {{ronde.agent.nom }}</strong><br>
+            <strong>NUMERO PROFESSIONEL : {{ronde.agent.numPro}}</strong><br>
+            
+        </div>
+        <div>
+            <h2 class="vert">
+                Récupération Matériel de ronde - Vérification - Début de Mission
+            </h2>
+            checklist
+            <div class="border1">
+                {% if ronde.materiel.cle == 1 %} Clés <input type="checkbox" checked value="Clés">
+                {% else %} Clés <input type="radio" value="Clés">
+                {% endif %}
+
+                {% if ronde.materiel.radio == 1 %} Radio <input type="checkbox" checked >
+                {% else %} Radio <input type="checkbox" value="Clés">
+                {% endif %}
+
+                {% if ronde.materiel.phone == 1 %} Téléphone <input type="checkbox" checked>
+                {% else %} Téléphone <input type="checkbox" value="Clés">
+                {% endif %}
+                {% if ronde.materiel.ronde == 1 %} Contrôleur de ronde <input type="checkbox" checked value="Clés">
+                {% else %} Contrôleur de ronde <input type="checkbox" value="Clés">
+                {% endif %}
+
+                {% if ronde.materiel.lamp == 1 %} Torche <input type="checkbox" checked value="Clés">
+                {% else %} Torche <input type="checkbox" value="Clés">
+                {% endif %}
+
+                {% if ronde.materiel.ivvadr == 1 %} Inspection visuelle du véhicule avant départ de ronde: <input type="checkbox" checked value="Clés">
+                {% else %} Inspection visuelle du véhicule avant départ de ronde: <input type="checkbox" value="Clés">
+                {% endif %}
+            </div>
+            <div>
+                <h5> Chronologie des actions :</h5>
+                <div class="border1">
+                    <h5>Début du service:</h5>
+                    <table border="1">
+                        <thead>
+                            <tr>
+                                <th>Temps</th>
+                                <th>Odre Chronologique des évenements</th>
+                                <!--<th>Fin de service</th>
+                                <th>Numero PROFESSIONEL</th>-->
+                            </tr>
+                        </thead>
+                        <tbody>
+                           <!-- <tr>
+                                <td>{{ronde.agent.nom}} {{ronde.agent.prenom}}</td>
+                                <td>{{ronde.dateDebut| date()}}</td>
+                                <td>{{ronde.dateFin|date()}} </td>
+                                <td>{{ronde.agent.numPro}} </td>
+                            </tr>-->
+                            {% for group in groupages %}
+                                <tr>
+                                    <td> {{group.evenement.heure| date('H:m:s')}} </td>
+                                     <td> {{group.evenement.observation}} </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <strong>Date de Fin: {{ronde.dateFin|date()}}</strong>
+                </div>
+            </div>
+
+        </div>
+          
+    </body>
+</html>
