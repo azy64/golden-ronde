@@ -15,12 +15,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/pointaux")
- * @isGranted("ROLE_ADMIN")
+ * 
  */
 class PointauxController extends AbstractController
 {
     /**
      * @Route("/", name="app_pointaux_index", methods={"GET"})
+     * @isGranted("ROLE_ADMIN")
      */
     public function index(PointauxRepository $pointauxRepository): Response
     {
@@ -31,6 +32,7 @@ class PointauxController extends AbstractController
 
     /**
      * @Route("/new", name="app_pointaux_new", methods={"GET", "POST"})
+     * @isGranted("ROLE_ADMIN")
      */
     public function new(Request $request, PointauxRepository $pointauxRepository): Response
     {
@@ -52,6 +54,7 @@ class PointauxController extends AbstractController
 
     /**
      * @Route("/{id}/show", name="app_pointaux_show", methods={"GET"})
+     * @isGranted("ROLE_ADMIN")
      */
     public function show(Pointaux $pointaux): Response
     {
@@ -62,6 +65,7 @@ class PointauxController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_pointaux_edit", methods={"GET", "POST"})
+     * @isGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Pointaux $pointaux, PointauxRepository $pointauxRepository): Response
     {
@@ -82,6 +86,7 @@ class PointauxController extends AbstractController
 
     /**
      * @Route("/{id}/delete", name="app_pointaux_delete", methods={"POST"})
+     * @isGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, Pointaux $pointaux, PointauxRepository $pointauxRepository): Response
     {

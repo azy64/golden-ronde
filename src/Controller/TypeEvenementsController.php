@@ -13,12 +13,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/type/evenements")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class TypeEvenementsController extends AbstractController
 {
     /**
      * @Route("/", name="app_type_evenements_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(TypeEvenementsRepository $typeEvenementsRepository): Response
     {
@@ -29,6 +30,7 @@ class TypeEvenementsController extends AbstractController
 
     /**
      * @Route("/new", name="app_type_evenements_new", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function new(Request $request, TypeEvenementsRepository $typeEvenementsRepository): Response
     {
@@ -50,6 +52,7 @@ class TypeEvenementsController extends AbstractController
 
     /**
      * @Route("/{id}/show", name="app_type_evenements_show", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function show(TypeEvenements $typeEvenement): Response
     {
@@ -60,6 +63,7 @@ class TypeEvenementsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_type_evenements_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, TypeEvenements $typeEvenement, TypeEvenementsRepository $typeEvenementsRepository): Response
     {
@@ -80,6 +84,7 @@ class TypeEvenementsController extends AbstractController
 
     /**
      * @Route("/{id}", name="app_type_evenements_delete", methods={"POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Request $request, TypeEvenements $typeEvenement, TypeEvenementsRepository $typeEvenementsRepository): Response
     {

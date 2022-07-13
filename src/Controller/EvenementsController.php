@@ -13,12 +13,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/evenements")
- * @IsGranted("ROLE_ADMIN")
+ * 
  */
 class EvenementsController extends AbstractController
 {
     /**
      * @Route("/", name="app_evenements_index", methods={"GET"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function index(EvenementsRepository $evenementsRepository): Response
     {
@@ -29,6 +30,7 @@ class EvenementsController extends AbstractController
 
     /**
      * @Route("/new", name="app_evenements_new", methods={"GET", "POST"})
+     * 
      */
     public function new(Request $request, EvenementsRepository $evenementsRepository): Response
     {
@@ -60,6 +62,7 @@ class EvenementsController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="app_evenements_edit", methods={"GET", "POST"})
+     * @IsGranted("ROLE_ADMIN")
      */
     public function edit(Request $request, Evenements $evenement, EvenementsRepository $evenementsRepository): Response
     {
