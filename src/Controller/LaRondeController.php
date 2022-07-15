@@ -49,6 +49,7 @@ class LaRondeController extends AbstractController
         $form->handleRequest($request);
        
         if ($form->isSubmitted() && $form->isValid()) {
+            //dd($form);
             $tmp = json_decode($form->get('data')->getData());
             $laRonde->setDateFin(new \DateTime());
             if($tmp!==null && count($tmp)>0){
@@ -73,7 +74,7 @@ class LaRondeController extends AbstractController
         foreach($tab as $el){
             $groupage = new Groupage();
             $event = new Evenements();
-            $event->setHeure(new DateTime($el->{'heure'}));
+            $event->setHeure(new \DateTime($el->{'heure'}));
             $event->setObservation($el->{'observation'});
             
             $type_rep = $this->getDoctrine()->getManager()->getRepository(TypeEvenements::class);
@@ -144,8 +145,8 @@ class LaRondeController extends AbstractController
         $groupages = $grp->findBy(['laRonde'=> $ronde]);
         //dd($groupages);
         $html =  $this->renderView('pdf/index.html.twig',
-        ['ronde'=> $ronde, 'groupages'=>$groupages,'logo'=>$path]
-    );
+            ['ronde'=> $ronde, 'groupages'=>$groupages,'logo'=>$path]
+        );
 
         $dompdf->loadHtml($html);
 

@@ -41,8 +41,20 @@
 }
 #la_ronde_date_debut {
     width: 100%;
-    margin-bottom: 10px;    }
+    margin-bottom: 10px;    
+}
+#la_ronde_date_debut input[type=date] + div {
+    display: inline-block !important;
+    width: 20%;
+}
 #la_ronde_date_debut select {
+    width: 45%;
+    margin-right: 1%;
+    padding: 10px;
+    display: inline-block;
+    border: none;
+}
+#la_ronde_date_debut input[type=date] {
     width: 32%;
     margin-right: 1%;
     padding: 10px;

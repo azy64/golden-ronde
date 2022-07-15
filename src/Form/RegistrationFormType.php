@@ -67,6 +67,7 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('date_nais',DateType::class, [
                 'label' => 'Date de naissance',
+                'years' => range(date('1920'), date('Y')),
                 'attr' => ['class' => 'js-datepicker'],
                 'label_attr' => ['class' => 'fs-3'],
                 'row_attr' => [

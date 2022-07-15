@@ -6,11 +6,8 @@ use App\Entity\LaRonde;
 use App\Repository\SiteRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -43,15 +40,19 @@ class LaRondeType extends AbstractType
                 ],
             ]) 
             */
-            ->add('date_debut',DateType::class, [
+            ->add('date_debut',DateTimeType::class, [
                 'label' => 'Date de début',
-                'years' => range(date('1900'), date('Y')),
+                'years' => range(date('2020'), date('Y')),
+                'date_widget'=>'single_text',
+                'html5'=>true,
+                'disabled'=>true,
                 'attr' => [
                     'class' => 'datepicker',
                     'placeholder' => 'Date de début',
                     'readonly' => 'readonly',
+                    'disabled'=>'disabled',
                     'id' => 'date_debut',
-                    'value' => date('Y-m-d')
+                    /*'value' => date('Y-m-d H:m:s')*/
                 ],
             ])
             ->add('site',ChoiceType::class, [

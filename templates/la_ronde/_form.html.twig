@@ -82,6 +82,7 @@
 <script type="text/javascript">
 let site =  parseInt(localStorage.getItem('site'));
 let id = 1;
+
 const base_url = '{{ app.request.getBaseURL() }}';
 const loadPointaux = async (idPoint,target) => {
     const response = await fetch(`${base_url}/pointaux/site-pointaux/${idPoint}`);
@@ -104,6 +105,46 @@ const loadType = async (target) => {
         option.innerHTML = type;
         target.appendChild(option);
     });
+}
+/*
+* fonction permettant de selectionner une valeur 
+* par defaut dans un select
+*/
+
+const setDefaultValueInSelect = (select, targetValue) => {
+    const options = select.childNodes;
+    for(let i =1;i<options.length;i++){
+        if(options[i].value===targetValue) options[i].selected = true;
+        else options[i].selected = false;
+    }
+
+}
+/*
+* cette fonction recupere la date et l'heure dans le formulaire
+* pour l'enregistrer dans le localStorage du l'utilisateur
+*/
+const getFormTime = ()=>{
+    const formDate = document.querySelector('#la_ronde_date_debut_date');
+    const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
+    const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
+    localStorage.setItem('formTime',`${formDate.value}##${heureForm.value}:${minForm.value}`);
+}
+
+/*
+* fonction servant à restituer le formTime du formulaire en cas 
+* de perte session subite ou du temps expiré lors de l'inactivité
+*/
+
+const setFormTime = () =>{
+    const formDate = document.querySelector('#la_ronde_date_debut_date');
+    const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
+    const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
+    const formTime = localStorage.getItem('formTime').split('##');
+    formDate.value = formTime[0];
+    const heureMin = formTime[1].split(':');
+    setDefaultValueInSelect(heureForm,heureMin[0]);
+    setDefaultValueInSelect(minForm,heureMin[1]);
+    
 }
 loadType(document.getElementById('type'));
 const select = document.getElementById('la_ronde_site');
@@ -135,18 +176,23 @@ select.addEventListener('change', function(e){
 // ----------------------------------------------------------------------
 const path = "{{ path('app_la_ronde_new') }}";
 window.addEventListener('load',function() {
+/*
+* nous recuperons les donner du groupage
+* au moment ou la page fini son chargement
+* afin de remplir la section pointaux et type du formulaire
+* et nous recuperons la date anterieure si il ya eu un login subite 
+*/
   const btn = document.getElementById('add');
   const select = document.getElementById('la_ronde_site');
   const id = select.selectedOptions[0].innerHTML.split("-")[0].trim();
   const container = document.getElementById('la_ronde_groupages');
+  if(localStorage.getItem('formTime')) setFormTime()
+  else getFormTime();
   btn.addEventListener('click', ()=>{
       const content =container.getAttribute('data-prototype');
       container.innerHTML+= (content);
   });
-   let date = new Date();
-   let el = document.getElementById('la_ronde_date_debut');
-   let day = date.toString();
-   el.value = day;
+   
    loadPointaux(id, document.getElementById('pointaux'));
 });
 const btnDisplay = document.getElementById('display');
@@ -271,6 +317,7 @@ const soumettre = () =>{
             const input = document.getElementById('la_ronde_data');
             input.setAttribute('value', localStorage.getItem('dataEvents'));
             localStorage.removeItem('dataEvents');
+            localStorage.removeItem('formTime');
             console.log('input:' , input);
             form.appendChild(input);
         }
