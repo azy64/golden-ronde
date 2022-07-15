@@ -135,10 +135,18 @@ class LaRondeController extends AbstractController
      */
     public function download(LaRonde $ronde, GroupageRepository $grp){
         //$knpSnappyPdf = new Pdf();
+
+        $path = $this->getParameter('kernel.project_dir').'/public/images/logo.png';
+        $mime = mime_content_type($this->getParameter('kernel.project_dir').'/public/images/logo.png');
+        $path = base64_encode(file_get_contents($path));
+        $path = 'data:' . $mime . ';base64,' . $path;
+        //dd($path);
         $dompdf = new Dompdf();
         $groupages = $grp->findBy(['laRonde'=> $ronde]);
         //dd($groupages);
-        $html =  $this->renderView('pdf/index.html.twig',['ronde'=> $ronde, 'groupages'=>$groupages]);
+        $html =  $this->renderView('pdf/index.html.twig',
+        ['ronde'=> $ronde, 'groupages'=>$groupages,'logo'=>$path]
+    );
 
         $dompdf->loadHtml($html);
 

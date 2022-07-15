@@ -13,11 +13,43 @@
                 border : 1px solid gray;
                 padding: 3px;
             }
+            .head {
+                display: grid;
+                width:100%;
+            }
+            .col-2 {
+                grid-template-columns: 30% 60%;
+            }
+            .grid {
+                display: inline-block;
+                text-align:center;
+            }
+            .baseline {
+                 vertical-align: baseline;
+            }
+            .topline {
+                vertical-align:top;
+            }
+            .p-l-5{
+                padding-left: 40px;
+            }
+
         </style>
     </head>
     <body>
+        <div class="head col-2">
+            <div class="grid baseline">
+                <img src="{{logo}}" alt="logo" title="logo" width="200" height="200" />
+            </div>
+            <div class="grid topline p-l-5">
+                <h1 style="text-align:center;" class="border1">
+                    FORMULAIRE RAPPORT DE RONDE
+                </h1>
+            </div>
+            
+           
+        </div>
         <div>
-            <h1 style="text-align:center">FORMULAIRE RAPPORT DE RONDE</h1>
             <b>DATE : {{ronde.dateFin | date()}}</b><br>
             <strong>NOM DU SITE : {{ronde.site.nom}}</strong><br>
             <strong>ADRESSE DU SITE : {{ronde.site.adresse}}</strong><br>
@@ -58,7 +90,7 @@
                 <h5> Chronologie des actions :</h5>
                 <div class="border1">
                     <h5>Début du service:</h5>
-                    <table border="1">
+                    <table border="1" align="center">
                         <thead>
                             <tr>
                                 <th>Temps</th>
@@ -82,7 +114,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <strong>Date de Fin: {{ronde.dateFin|date()}}</strong>
+                    <small>Date de Fin: {{ronde.dateFin|date()}}</small>
                 </div>
             </div>
 
