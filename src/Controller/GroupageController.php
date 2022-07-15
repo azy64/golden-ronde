@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/groupage")
- * @IsGranted("ROLE_ADMIN")
+ *
  */
 class GroupageController extends AbstractController
 {

@@ -140,7 +140,6 @@ class LaRondeController extends AbstractController
         $mime = mime_content_type($this->getParameter('kernel.project_dir').'/public/images/logo.png');
         $path = base64_encode(file_get_contents($path));
         $path = 'data:' . $mime . ';base64,' . $path;
-        //dd($path);
         $dompdf = new Dompdf();
         $groupages = $grp->findBy(['laRonde'=> $ronde]);
         //dd($groupages);
