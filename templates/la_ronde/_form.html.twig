@@ -88,7 +88,7 @@ const loadPointaux = async (idPoint,target) => {
     const response = await fetch(`${base_url}/pointaux/site-pointaux/${idPoint}`);
     const data = await response.json();
     target.innerHTML = '';
-    console.log('data pointaux:', data);
+    // console.log('data pointaux:', data);
     data.map(pointaux => {
         const option = document.createElement('option');
         option.value = pointaux;
@@ -106,6 +106,7 @@ const loadType = async (target) => {
         target.appendChild(option);
     });
 }
+
 /*
 * fonction permettant de selectionner une valeur 
 * par defaut dans un select
@@ -119,11 +120,29 @@ const setDefaultValueInSelect = (select, targetValue) => {
     }
 
 }
+
+/*
+* fonction pour auto repmplir la date et l'heure du formulaire
+*/
+
+const setFormCurrentTime = () => {
+    const formDate = document.querySelector('#la_ronde_date_debut_date');
+    const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
+    const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
+    const dateTime = new Date();
+    const jour = `${(dateTime.getDate())>=10?'':0 }${dateTime.getDate()}`;
+    const mois = `${(dateTime.getMonth()+1)>=10?'':0 }${dateTime.getMonth()+1}`;
+    formDate.value = `${dateTime.getFullYear()}-${mois}-${jour}`;
+    setDefaultValueInSelect(heureForm,`${(dateTime.getHours())}`);
+    setDefaultValueInSelect(minForm,`${(dateTime.getMinutes())}`);
+    // console.log(`${dateTime.getFullYear()}-${mois}-${jour} ${heureForm.value}:${minForm.value}`);
+}
+
 /*
 * cette fonction recupere la date et l'heure dans le formulaire
 * pour l'enregistrer dans le localStorage du l'utilisateur
 */
-const getFormTime = ()=>{
+const setFormTimeToLocalStorage = ()=>{
     const formDate = document.querySelector('#la_ronde_date_debut_date');
     const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
     const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
@@ -135,16 +154,41 @@ const getFormTime = ()=>{
 * de perte session subite ou du temps expiré lors de l'inactivité
 */
 
-const setFormTime = () =>{
+const getFormTimeFromLocalStorage = () =>{
     const formDate = document.querySelector('#la_ronde_date_debut_date');
     const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
     const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
     const formTime = localStorage.getItem('formTime').split('##');
     formDate.value = formTime[0];
+    console.log('format:',formTime[0]);
     const heureMin = formTime[1].split(':');
     setDefaultValueInSelect(heureForm,heureMin[0]);
     setDefaultValueInSelect(minForm,heureMin[1]);
     
+}
+/*
+* la fonction soumettre va attribuer un evenement 
+* click au boutton du formulaire pour le soumettre
+* enfin d'introduire d'autres élements dans le formulaire
+*/
+const soumettre = () =>{
+    const submit = document.getElementById('submit');
+    const dataEvents = JSON.parse(localStorage.getItem('dataEvents'));
+    submit.addEventListener('click', (event)=>{
+        if(dataEvents.length>=2){
+            const form =document.querySelector('form');
+            const input = document.getElementById('la_ronde_data');
+            input.setAttribute('value', localStorage.getItem('dataEvents'));
+            localStorage.removeItem('dataEvents');
+            localStorage.removeItem('formTime');
+            localStorage.clear();
+            form.appendChild(input);
+        }
+        else{
+            event.preventDefault();
+            alert('Veuillez au moins enregistrer deux evenements!');
+        }           
+    });
 }
 loadType(document.getElementById('type'));
 const select = document.getElementById('la_ronde_site');
@@ -186,14 +230,26 @@ window.addEventListener('load',function() {
   const select = document.getElementById('la_ronde_site');
   const id = select.selectedOptions[0].innerHTML.split("-")[0].trim();
   const container = document.getElementById('la_ronde_groupages');
-  if(localStorage.getItem('formTime')) setFormTime()
-  else getFormTime();
+  // localStorage.clear();
+  console.log('localstorage:',localStorage);
+  const formTime = localStorage.getItem('formTime');
+  console.log('formTime:',formTime);
+  if(formTime) {
+    console.log('localstorage:',localStorage.getItem('formTime'));
+    getFormTimeFromLocalStorage();
+  }
+  else{
+    setFormCurrentTime();
+    setFormTimeToLocalStorage();
+    console.log('crée le storage...');
+  }
   btn.addEventListener('click', ()=>{
       const content =container.getAttribute('data-prototype');
       container.innerHTML+= (content);
   });
    
    loadPointaux(id, document.getElementById('pointaux'));
+   soumettre();
 });
 const btnDisplay = document.getElementById('display');
 btnDisplay.addEventListener('click', ()=>{
@@ -307,31 +363,6 @@ const loadData = () =>{
         table.appendChild(row);
     });
 }
-const soumettre = () =>{
-    localStorage.removeItem('site');
-    const submit = document.getElementById('submit');
-    const dataEvents = JSON.parse(localStorage.getItem('dataEvents'));
-    submit.addEventListener('click', (event)=>{
-        if(dataEvents.length>=2){
-            const form =document.querySelector('form');
-            const input = document.getElementById('la_ronde_data');
-            input.setAttribute('value', localStorage.getItem('dataEvents'));
-            localStorage.removeItem('dataEvents');
-            localStorage.removeItem('formTime');
-            console.log('input:' , input);
-            form.appendChild(input);
-        }
-        else{
-            event.preventDefault();
-            alert('Veuillez au moins enregistrer deux evenements!');
-        }
-        
-        
-        //localStorage.removeItem('site');
-        //form.submit();
-           
-    });
-}
-soumettre();
+
 loadData();
 </script>

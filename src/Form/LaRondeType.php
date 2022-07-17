@@ -49,7 +49,7 @@ class LaRondeType extends AbstractType
                 'attr' => [
                     'class' => 'datepicker',
                     'placeholder' => 'Date de début',
-                    'readonly' => 'readonly',
+                    //'readonly' => 'readonly',
                     'disabled'=>'disabled',
                     'id' => 'date_debut',
                     /*'value' => date('Y-m-d H:m:s')*/

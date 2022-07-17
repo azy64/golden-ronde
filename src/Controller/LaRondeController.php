@@ -49,7 +49,7 @@ class LaRondeController extends AbstractController
         $form->handleRequest($request);
        
         if ($form->isSubmitted() && $form->isValid()) {
-            //dd($form);
+            dd($form);
             $tmp = json_decode($form->get('data')->getData());
             $laRonde->setDateFin(new \DateTime());
             if($tmp!==null && count($tmp)>0){

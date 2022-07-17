@@ -57,7 +57,7 @@ class LaRonde
         $this->evenements = new ArrayCollection();
         $this->pointauxes = new ArrayCollection();
         $this->groupages = new ArrayCollection();
-        $this->date_debut= new \DateTime();
+        // $this->date_debut= new \DateTime();
     }
 
     public function getId(): ?int
