@@ -93,20 +93,23 @@ class LaRondeController extends AbstractController
     /**
      * @Route("/{id}/show", name="app_la_ronde_show", methods={"GET"})
      */
-    public function show(LaRonde $laRonde): Response
+    public function show(LaRonde $laRonde, GroupageRepository $grp): Response
     {
+        $groupages = $grp->findBy(['laRonde'=>$laRonde]);
         return $this->render('la_ronde/show.html.twig', [
             'la_ronde' => $laRonde,
+            'groupages'=> $groupages,
         ]);
     }
 
     /**
      * @Route("/{id}/edit", name="app_la_ronde_edit", methods={"GET", "POST"})
      */
-    public function edit(Request $request, LaRonde $laRonde, LaRondeRepository $laRondeRepository): Response
+    public function edit(Request $request, LaRonde $laRonde, LaRondeRepository $laRondeRepository,GroupageRepository $grp): Response
     {
         $form = $this->createForm(LaRondeType::class, $laRonde);
         $form->handleRequest($request);
+        $groupages = $grp->findBy(['laRonde'=>$laRonde]);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $laRondeRepository->add($laRonde, true);
@@ -117,6 +120,7 @@ class LaRondeController extends AbstractController
         return $this->renderForm('la_ronde/edit.html.twig', [
             'la_ronde' => $laRonde,
             'form' => $form,
+            'groupages'=> $groupages,
         ]);
     }
 

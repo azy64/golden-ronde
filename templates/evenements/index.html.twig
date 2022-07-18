@@ -3,12 +3,12 @@
 {% block title %}Evenements index{% endblock %}
 
 {% block body %}
-    <h1>Evenements index</h1>
+    <h1 class="display-1">Evenements index</h1>
 
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Heure</th>
                 <th>Observation</th>
                 <th>actions</th>
@@ -21,8 +21,12 @@
                 <td>{{ evenement.heure ? evenement.heure|date('H:i:s') : '' }}</td>
                 <td>{{ evenement.observation }}</td>
                 <td>
-                    <a href="{{ path('app_evenements_show', {'id': evenement.id}) }}">show</a>
-                    <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}">edit</a>
+                    <a class="p-4 text-decoration-none" href="{{ path('app_evenements_show', {'id': evenement.id}) }}">
+                     <img src="{{asset('images/view.png')}}" width="35" title="visualiser" alt="visualser"/>
+                    </a>
+                    <a class="p-4 text-decoration-none" href="{{ path('app_evenements_edit', {'id': evenement.id}) }}">
+                     <img src="{{asset('images/editing.png')}}" width="35" title="modifier" alt="modifier"/>
+                    </a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +37,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_evenements_new') }}">Create new</a>
+    <a href="{{ path('app_evenements_new') }}">
+        <img src="{{asset('images/plus.png')}}" width="35" title="creer" alt="creer"/>
+    </a>
 {% endblock %}

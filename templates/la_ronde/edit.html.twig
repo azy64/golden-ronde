@@ -3,11 +3,16 @@
 {% block title %}Edit LaRonde{% endblock %}
 
 {% block body %}
-    <h1>Edit LaRonde</h1>
+    <h1 class="display-1" >La Ronde # {{la_ronde.id}}</h1>
 
-    {{ include('la_ronde/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('la_ronde/_form.html.twig', {'button_label': 'Update','groupages': groupages}) }}
 
-    <a href="{{ path('app_la_ronde_index') }}">back to list</a>
-
-    {{ include('la_ronde/_delete_form.html.twig') }}
+    
+    <div class="bg-dark">
+        {{ include('la_ronde/_delete_form.html.twig') }}
+    <a class="m-e-3 text-decoration-none" href="{{ path('app_la_ronde_index') }}">
+        <img src="{{asset('images/previous.png')}}" width="35" title="Les rondes" alt="revenir aux rondes"/>
+    </a>
+    </div>
+    
 {% endblock %}

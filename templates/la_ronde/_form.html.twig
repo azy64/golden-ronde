@@ -18,7 +18,7 @@
    <button id="display" class="header-bg text-white p-2 border-0">Ajouter une chronologie </button>
 </div>
 <div>
-  <table class="golden-table w-100" id="recap">
+  <table class="table table-striped golden-table w-100" id="recap">
     <thead>
         <tr class="text-center">
             <th class="p-1" >Heure</th>
@@ -29,6 +29,22 @@
         </tr>
     </thead>
     <tbody>
+    {% if groupages is defined %}
+         {% for groupage in groupages %}
+            <tr>
+                <td>{{groupage.evenement.heure|date('H:i')}}</td>
+                <td>{{groupage.evenement.typeEvenement.libelle}}</td>
+                <td>{{groupage.pointau.libelle}}</td>
+                <td>{{groupage.evenement.observation}}</td>
+                <td>
+                <a class="p-2 m-e-4 text-decoration-none" href="{{ path('app_la_ronde_download', {'id': la_ronde.id}) }}">
+                        <img src="{{asset('images/download.png')}}" width="25" title="Télécharger en Pdf" alt="Télécharger"/>
+                    </a>
+                {{ include('la_ronde/_delete_form.html.twig') }}
+                </td>
+            </td>
+        {% endfor %}
+    {% endif %}
     </tbody>
   </table>
        
@@ -290,7 +306,15 @@ const vider = ()=> {
 // button remove from table of events--------------
 const createButtonRemove = (tdAction,id) =>{
     const btnRemove = document.createElement('button');
-    btnRemove.innerHTML= 'remove event';
+    const removeImage = document.createElement('img');
+    removeImage.src = "{{asset('images/delete.png')}}"
+    removeImage.setAttribute('width',25);
+    removeImage.setAttribute('title','supprimer');
+    removeImage.setAttribute('alt','supprimer');
+    removeImage.setAttribute('data-value',id);
+    btnRemove.appendChild(removeImage);
+
+    //btnRemove.innerHTML= 'remove event';
     btnRemove.setAttribute('data-value',id);
     btnRemove.classList.add('header-bg');
     btnRemove.classList.add('p-3');
@@ -300,14 +324,17 @@ const createButtonRemove = (tdAction,id) =>{
         let data = JSON.parse(localStorage.getItem('dataEvents'));
         const idValue = parseInt(e.target.getAttribute('data-value'));
         const table = document.getElementById('recap');
+        const tmp = `recap${idValue}`;
         data = data.filter((el)=> el.idEvent!=idValue);
-        table.removeChild(document.querySelector('#recap'+idValue));
+        const element = document.getElementById(tmp);
+        table.removeChild(element);
         localStorage.setItem('dataEvents',JSON.stringify(data));
         if(data.length===0){
             localStorage.removeItem('site');
             select.disabled = false;
         }
     });
+    tdAction.style ='text-align:center';
     tdAction.appendChild(btnRemove);
     return tdAction;
 }
@@ -368,6 +395,7 @@ const loadData = () =>{
         tdType.innerHTML = evenement.type;
         tdPointaux.innerHTML = evenement.pointaux;
         tdObservation.innerHTML = evenement.observation;
+        row.setAttribute('id',`recap${evenement.idEvent}`);
         row.appendChild(tdHeure);
         row.appendChild(tdType);
         row.appendChild(tdPointaux);
