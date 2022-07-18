@@ -49,9 +49,10 @@ class LaRondeController extends AbstractController
         $form->handleRequest($request);
        
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form);
+            //dd($form);
             $tmp = json_decode($form->get('data')->getData());
             $laRonde->setDateFin(new \DateTime());
+            //dd($laRonde);
             if($tmp!==null && count($tmp)>0){
                 $groupe=  $this->createGroupage($tmp);
                 foreach($groupe as $g){

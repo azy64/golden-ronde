@@ -3,14 +3,17 @@
 {% block title %}LaRonde index{% endblock %}
 
 {% block body %}
-    <h1>LaRonde index</h1>
+    <h1 class="display-2">
+        La Ronde
+        <a href="{{ path('app_la_ronde_new') }}"><img src="{{asset('images/plus.png')}}" width="35" title="Nouvelle ronde" alt="Nouvelle ronde"/></a>
+    </h1>
 
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Id</th>
-                 <th>Date_debut</th>
-                <th>Date_fin</th>
+                <th>ID</th>
+                 <th>Date debut</th>
+                <th>Date fin</th>
                <th>Site</th>
                <th>Superviseur</th>
                 <th>actions</th>
@@ -25,11 +28,17 @@
                <td>{{ la_ronde.site.nom }}</td>
                <td>{{ la_ronde.agent.nom }} {{ la_ronde.agent.prenom }}</td>
                 <td>
-                    <a href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">Consulter</a>
+                    <a class="m-e-3 text-decoration-none" href="{{ path('app_la_ronde_show', {'id': la_ronde.id}) }}">
+                        <img src="{{asset('images/view.png')}}" width="25" title="details" alt="details"/>
+                    </a>
                     {% if is_granted('ROLE_ADMIN')%}
-                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">Modifier</a>
+                    <a href="{{ path('app_la_ronde_edit', {'id': la_ronde.id}) }}">
+                         <img src="{{asset('images/editing.png')}}" width="25" title="details" alt="details"/>
+                    </a>
                     {% endif %}
-                    <a href="{{ path('app_la_ronde_download', {'id': la_ronde.id}) }}">Télécharger</a>
+                    <a class="m-e-4 text-decoration-none" href="{{ path('app_la_ronde_download', {'id': la_ronde.id}) }}">
+                        <img src="{{asset('images/download.png')}}" width="25" title="Télécharger en Pdf" alt="Télécharger"/>
+                    </a>
                 </td>
             </tr>
         {% else %}
@@ -40,5 +49,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_la_ronde_new') }}">Nouvelle ronde</a>
+    <a href="{{ path('app_la_ronde_new') }}"><img src="{{asset('images/plus.png')}}" width="35" title="Nouvelle ronde" alt="Nouvelle ronde"/></a>
 {% endblock %}

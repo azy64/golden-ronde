@@ -52,7 +52,7 @@
            
         </div>
         <div>
-            <b>DATE : {{ronde.dateDebut | date()}}</b><br>
+            <b>DATE : {{ronde.dateDebut | date('d/m/y H:i:s')}}</b><br>
             <strong>NOM DU SITE : {{ronde.site.nom}}</strong><br>
             <strong>ADRESSE DU SITE : {{ronde.site.adresse}}</strong><br>
             <strong>NOM DE L'AGENT : {{ronde.agent.nom }}</strong><br>
@@ -110,13 +110,13 @@
                             </tr>-->
                             {% for group in groupages %}
                                 <tr>
-                                    <td> {{group.evenement.heure| date('H:m:s')}} </td>
+                                    <td> {{group.evenement.heure| date('H:i')}} </td>
                                      <td> {{group.evenement.observation}} </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                    <small>Date de Fin: {{ronde.dateFin|date()}}</small>
+                    <small>Date de Fin: {{ronde.dateFin|date('d/m/y H:i:s')}}</small>
                 </div>
             </div>
 

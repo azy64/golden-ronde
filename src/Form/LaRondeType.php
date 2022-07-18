@@ -45,7 +45,7 @@ class LaRondeType extends AbstractType
                 'years' => range(date('2020'), date('Y')),
                 'date_widget'=>'single_text',
                 'html5'=>true,
-                'disabled'=>true,
+                //'disabled'=>true,
                 'attr' => [
                     'class' => 'datepicker',
                     'placeholder' => 'Date de début',

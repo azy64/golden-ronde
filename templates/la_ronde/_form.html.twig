@@ -133,8 +133,11 @@ const setFormCurrentTime = () => {
     const jour = `${(dateTime.getDate())>=10?'':0 }${dateTime.getDate()}`;
     const mois = `${(dateTime.getMonth()+1)>=10?'':0 }${dateTime.getMonth()+1}`;
     formDate.value = `${dateTime.getFullYear()}-${mois}-${jour}`;
+    formDate.disabled=true;
     setDefaultValueInSelect(heureForm,`${(dateTime.getHours())}`);
     setDefaultValueInSelect(minForm,`${(dateTime.getMinutes())}`);
+    heureForm.disabled = true;
+    minForm.disabled = true;
     // console.log(`${dateTime.getFullYear()}-${mois}-${jour} ${heureForm.value}:${minForm.value}`);
 }
 
@@ -159,12 +162,15 @@ const getFormTimeFromLocalStorage = () =>{
     const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
     const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
     const formTime = localStorage.getItem('formTime').split('##');
-    formDate.value = formTime[0];
-    console.log('format:',formTime[0]);
+    //formDate.value = formTime[0];
+    formDate.setAttribute('value',formTime[0]);
+    formDate.disabled = true;
+    //console.log('format:',formTime[0]);
     const heureMin = formTime[1].split(':');
     setDefaultValueInSelect(heureForm,heureMin[0]);
     setDefaultValueInSelect(minForm,heureMin[1]);
-    
+    heureForm.disabled = true;
+    minForm.disabled = true;  
 }
 /*
 * la fonction soumettre va attribuer un evenement 
@@ -173,9 +179,17 @@ const getFormTimeFromLocalStorage = () =>{
 */
 const soumettre = () =>{
     const submit = document.getElementById('submit');
-    const dataEvents = JSON.parse(localStorage.getItem('dataEvents'));
     submit.addEventListener('click', (event)=>{
+        //event.preventDefault();
+        const dataEvents = JSON.parse(localStorage.getItem('dataEvents'))??'';
+        //alert(dataEvents.length);
         if(dataEvents.length>=2){
+            const formDate = document.querySelector('#la_ronde_date_debut_date');
+            const heureForm = document.querySelector('#la_ronde_date_debut_time_hour');
+            const minForm = document.querySelector('#la_ronde_date_debut_time_minute');
+            formDate.disabled = false;
+            heureForm.disabled = false;
+            minForm.disabled = false;
             const form =document.querySelector('form');
             const input = document.getElementById('la_ronde_data');
             input.setAttribute('value', localStorage.getItem('dataEvents'));
@@ -231,7 +245,6 @@ window.addEventListener('load',function() {
   const id = select.selectedOptions[0].innerHTML.split("-")[0].trim();
   const container = document.getElementById('la_ronde_groupages');
   // localStorage.clear();
-  console.log('localstorage:',localStorage);
   const formTime = localStorage.getItem('formTime');
   console.log('formTime:',formTime);
   if(formTime) {
