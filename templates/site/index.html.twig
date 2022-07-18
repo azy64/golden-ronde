@@ -3,12 +3,12 @@
 {% block title %}Site index{% endblock %}
 
 {% block body %}
-    <h1>Site index</h1>
+    <h1 class="display-1">Site index</h1>
 
-    <table class="table">
+    <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Nom</th>
                 <th>Adresse</th>
                 <th>actions</th>
@@ -21,8 +21,12 @@
                 <td>{{ site.nom }}</td>
                 <td>{{ site.adresse }}</td>
                 <td>
-                    <a href="{{ path('app_site_show', {'id': site.id}) }}">show</a>
-                    <a href="{{ path('app_site_edit', {'id': site.id}) }}">edit</a>
+                    <a class="p-3 text-decoration-none" href="{{ path('app_site_show', {'id': site.id}) }}">
+                        <img src="{{asset('images/view.png')}}" width="35" title="visualiser" alt="visualiser"/>
+                    </a>
+                    <a class="p-3 text-decoration-none" href="{{ path('app_site_edit', {'id': site.id}) }}">
+                        <img src="{{asset('images/editing.png')}}" width="35" title="editer" alt="editer"/>
+                    </a>
                 </td>
             </tr>
         {% else %}
